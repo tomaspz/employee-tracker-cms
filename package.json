@@ -1,0 +1,25 @@
+{
+  "name": "employee-tracker-cms",
+  "version": "1.0.0",
+  "description": "This application has an interface to make it easy for non-developers to view and interact with information stored in databases. The interface is what is known as [Content Management System](https://en.wikipedia.org/wiki/Content_management_system).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomaspz/employee-tracker-cms.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tomaspz/employee-tracker-cms/issues"
+  },
+  "homepage": "https://github.com/tomaspz/employee-tracker-cms#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^7.1.0",
+    "mysql": "^2.18.1"
+  }
+}
