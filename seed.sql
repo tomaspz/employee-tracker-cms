@@ -26,4 +26,3 @@ VALUES  ("Petra", "Punch", 1, null),
         ("Kelly", "Brick", 9, null),
         ("Anthony", "Krone", 10, 9)
 ;
-
