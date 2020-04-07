@@ -60,7 +60,9 @@ SO I can organize and focus on the business
 
 * The [InquirerJs](https://www.npmjs.com/package/inquirer/v/0.2.3) NPM package to interact with the user via the command-line.
 
-* The [console.table](https://www.npmjs.com/package/console.table) NPM package is used to print MySQL rows to the console. 
+* The [Console.table](https://www.npmjs.com/package/console.table) NPM package is used to print MySQL rows to the console. 
+
+* The [Asciiart-logo](https://www.npmjs.com/package/asciiart-logo) NPM package is used to print the logo and the introduction message to the user.
 
 * We used a separate file to contain the functions that perform specific SQL queries. A constructor function or a class is helpful for organization.
 
@@ -68,12 +70,33 @@ SO I can organize and focus on the business
 
 * We use the `seed.sql` file to pre-populate the database. This makes the development of individual features much easier.
 
-* The [SQL Bolt](https://sqlbolt.com/) provides some extra information.
+## Application Example
 
-## Animated Gif Example
-
-![Employee Tracker](assets/img/employee-tracker.gif)
+![Employee Tracker CMS](assets/img/employee_tracker_cms.gif)
 
 ## GitHub Repository URL
 
 [Employee Tracker CMS](https://github.com/tomaspz/employee-tracker-cms)
+
+## Screenshots
+
+When application starts:
+![App Start](assets/img/0_application_start.png)
+
+When viewing all employees:
+![All Employees](assets/img/1_view_all_employees.png)
+
+When viewing all roles:
+![All Roles](assets/img/2_view_all_roles.png)
+
+When viewing all departments:
+![All Departments](assets/img/3_view_all_departments.png)
+
+When viewing all employees by department:
+![All Employees By Department](assets/img/4_view_all_employees_by_department.png)
+
+When viewing all employees by manager:
+![All Employees By Manager](assets/img/5_view_all_employees_by_manager.png)
+
+When viewing the total department budget:
+![Department Budget](assets/img/6_view_total_department_budget.png)
