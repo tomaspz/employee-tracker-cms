@@ -8,9 +8,11 @@ const whatToDoQuestion = {
     type: "list", 
     message: "What would you like to do?",
     name: "question1",
-    pageSize: 13,
+    pageSize: 15,
     choices: [
-        "View All Employees", 
+        "View All Employees",
+        "View All Roles",
+        "View All Departments", 
         "View All Employees By Department",
         "View All Employees By Manager",
         "Add Employee",
@@ -109,6 +111,8 @@ async function inquireWhatToDo(){
         const answer = await inquirer.prompt (whatToDoQuestion);    
         switch (answer.question1){    
             case "View All Employees":    viewAllEmployees(); break; 
+            case "View All Roles":    viewAllRoles(); break;
+            case "View All Departments":    viewAllDepartments(); break;
             case "View All Employees By Department":    viewAllEmployeesByDepartment(); break;
             case "View All Employees By Manager":    viewAllEmployeesByManager(); break;
             case "Add Employee":          addEmployee(); break;
@@ -129,10 +133,13 @@ async function inquireWhatToDo(){
 
 async function viewAllEmployees(){
     try {
-        var queryAllEmployees =  `SELECT employee.first_name, employee.last_name 
-                                FROM employee`;
+        console.log("\n=====================================================================\n");
+        var queryAllEmployees =  `
+                SELECT employee.id AS EMPLOYEE_ID, employee.first_name AS EMPLOYEE_FIRST_NAME, employee.last_name AS EMPLOYEE_LAST_NAME
+                FROM employee`;
         await connection.query(queryAllEmployees, function(err, res) {
             console.table(res);
+            console.log("=====================================================================\n");
             inquireWhatToDo();
         });  
     } catch (error) {
@@ -140,15 +147,50 @@ async function viewAllEmployees(){
     }
 }  // end viewAllEmployees
 
+async function viewAllRoles(){
+    try {
+        console.log("\n=====================================================================\n");
+        var queryAllRoles =  `
+                SELECT role.id AS ROLE_ID, role.title AS ROLE_TITLE, role.salary AS ROLE_SALARY, role.department_id AS DEPARTMENT_ID
+                FROM role`;
+        await connection.query(queryAllRoles, function(err, res) {
+            console.table(res);
+            console.log("=====================================================================\n");
+            inquireWhatToDo();
+        });  
+    } catch (error) {
+        console.log("Error when viewing all roles: " + error);
+    }
+}  // end viewAllRoles
+
+async function viewAllDepartments(){
+    try {
+        console.log("\n=====================================================================\n");
+        var queryAllDepartments =  `
+                SELECT department.id AS DEPARTMENT_ID, department.name AS DEPARTMENT_NAME
+                FROM department`;
+        await connection.query(queryAllDepartments, function(err, res) {
+            console.table(res);
+            console.log("=====================================================================\n");
+            inquireWhatToDo();
+        });  
+    } catch (error) {
+        console.log("Error when viewing all departments: " + error);
+    }
+}  // end viewAllDepartments
+
 async function viewAllEmployeesByDepartment(){
     try {
-        var queryEmplByDept =  `SELECT department.name, employee.first_name, employee.last_name
-                                FROM  employee
-                                INNER JOIN role ON employee.role_id = role.id
-                                INNER JOIN department ON role.department_id = department.id
-                                ORDER BY employee.id`;
+        console.log("\n=====================================================================\n");
+        var queryEmplByDept =  `
+            SELECT department.name AS DEPARTMENT, employee.first_name AS FIRST_NAME, employee.last_name AS LAST_NAME
+            FROM  employee
+            INNER JOIN role ON employee.role_id = role.id
+            INNER JOIN department ON role.department_id = department.id
+            ORDER BY employee.id`;
         await connection.query(queryEmplByDept, function(err, res) {
             console.table(res);
+            console.log("=====================================================================\n");
             inquireWhatToDo();
         });  
         
@@ -159,11 +201,22 @@ async function viewAllEmployeesByDepartment(){
 
 async function viewAllEmployeesByManager(){
     try {
-        var queryEmplByManager =  `SELECT employee.manager_id, employee.first_name, employee.last_name
-                                FROM  employee
-                                ORDER BY employee.manager_id`;
+        console.log("\n===============================================================================\n");
+        var queryEmplByManager =  `
+            SELECT 
+                COALESCE(manager.first_name,"no manager") as MANAGER_FIRST,
+                COALESCE(manager.last_name,"no manager") as MANAGER_LAST,
+                employee.id as EMPL_ID,
+                employee.manager_id as MANAGER_ID,
+                employee.first_name as EMPLOYEE_FIRST,
+                employee.last_name as EMPLOYEE_LAST
+                FROM employee
+                LEFT JOIN employee manager
+                ON employee.manager_id = manager.id 
+                ORDER BY employee.manager_id`;
         await connection.query(queryEmplByManager, function(err, res) {
             console.table(res);
+            console.log("===============================================================================\n");
             inquireWhatToDo();
         });  
         
@@ -175,13 +228,14 @@ async function viewAllEmployeesByManager(){
 
 async function addEmployee(){
     try {
+        console.log("\n=====================================================================\n");
         console.log("Inserting a new employee .... \n")
         const answer = await inquirer.prompt(addEmployeeQuestions);
         await connection.query(
             "INSERT INTO employee SET ?", answer, function(err, res) {
               if (err) throw err;
-              console.log(res);
               console.log( "The employee has been successfully added!");
+              console.log("=====================================================================\n");
               inquireWhatToDo(); 
             }
         );    
@@ -192,12 +246,14 @@ async function addEmployee(){
 
 async function addRole(){
     try {
+        console.log("\n=====================================================================\n");
         console.log("Adding a new role .... \n");
         const answer = await inquirer.prompt(addRoleQuestions);
         await connection.query(
             "INSERT INTO role SET ?", answer, function(err, res) {
               if (err) throw err;
               console.log( "The role has been successfully added!");
+              console.log("\n=====================================================================\n");
               inquireWhatToDo(); 
             }
           );    
@@ -209,6 +265,7 @@ async function addRole(){
 
 async function addDepartment(){
     try {
+        console.log("\n=====================================================================\n");
         console.log("Adding a department .... \n");
         const answer = await inquirer.prompt(
             {
@@ -222,6 +279,7 @@ async function addDepartment(){
             "INSERT INTO department SET ?", answer, function(err, res) {
               if (err) throw err;
               console.log( "The department has been successfully added!");
+              console.log("\n=====================================================================\n");
               inquireWhatToDo(); 
             }
           );    
@@ -232,6 +290,7 @@ async function addDepartment(){
 
 async function deleteEmployee(){
     try {
+        console.log("\n=====================================================================\n");
         console.log("Deleting an employee .... \n")
         const answer = await inquirer.prompt(
             {
@@ -241,9 +300,10 @@ async function deleteEmployee(){
             }
         );
         await connection.query(
-            "DELETE FROM employee WHERE employee.id = ?", answer, function(err, res) {
+            "DELETE FROM employee WHERE employee.id = ?", answer.id, function(err, res) {
               if (err) throw err;
               console.log( "The employee has been successfully deleted!");
+              console.log("\n=====================================================================\n");
               inquireWhatToDo(); 
             }
         );    
@@ -255,6 +315,7 @@ async function deleteEmployee(){
 
 async function deleteRole(){
     try {
+        console.log("\n=====================================================================\n");
         console.log("Deleting role .... \n")
         const answer = await inquirer.prompt(
             {
@@ -264,9 +325,10 @@ async function deleteRole(){
             }
         );
         await connection.query(
-            "DELETE FROM role WHERE role.id = ?", answer, function(err, res) {
+            "DELETE FROM role WHERE role.id = ?", answer.id, function(err, res) {
               if (err) throw err;
               console.log( "The role has been successfully deleted!");
+              console.log("\n=====================================================================\n");
               inquireWhatToDo(); 
             }
         );    
@@ -277,6 +339,7 @@ async function deleteRole(){
 
 async function deleteDepartment(){
     try {
+        console.log("\n=====================================================================\n");
         console.log("Deleting department .... \n")
         const answer = await inquirer.prompt(
             {
@@ -286,9 +349,10 @@ async function deleteDepartment(){
             }
         );
         await connection.query(
-            "DELETE FROM department WHERE department.id = ?", answer, function(err, res) {
+            "DELETE FROM department WHERE department.id = ?", answer.id, function(err, res) {
               if (err) throw err;
               console.log( "The department has been successfully deleted!");
+              console.log("\n=====================================================================\n");
               inquireWhatToDo(); 
             }
         );    
@@ -299,6 +363,7 @@ async function deleteDepartment(){
 
 async function updateEmployeeRole(){
     try {
+        console.log("\n=====================================================================\n");
         console.log("Updating the employee role .... \n")
         const answer = await inquirer.prompt([
             {
@@ -316,6 +381,7 @@ async function updateEmployeeRole(){
             "UPDATE employee SET role_id=? WHERE employee.id=?", [answer.role_id, answer.id], function(err, res) {
               if (err) throw err;
               console.log( "Employee role successfully updated!");
+              console.log("\n=====================================================================\n");
               inquireWhatToDo(); 
             }
         );    
@@ -326,6 +392,7 @@ async function updateEmployeeRole(){
 
 async function updateEmployeeManager(){
     try {
+        console.log("\n=====================================================================\n");
         console.log("Updating the employee manager .... \n")
         const answer = await inquirer.prompt([
             {
@@ -343,6 +410,7 @@ async function updateEmployeeManager(){
             "UPDATE employee SET manager_id=? WHERE employee.id=?", [answer.manager_id, answer.id], function(err, res) {
               if (err) throw err;
               console.log( "Employee manager successfully updated!");
+              console.log("\n=====================================================================\n");
               inquireWhatToDo(); 
             }
         );    
@@ -361,6 +429,8 @@ async function viewTotalDeptBudget(){
                 choices: ["Engineering", "Human Resources", "Finance", "Management", "Sales"]
             }
         ]);
+        console.log("\n=====================================================================\n");
+        console.log("TOTAL DEPARTMENT BUDGET: \n")
         switch(answer.name) {
             case "Engineering": querySalaryDepartment(1, "Engineering"); break;                                   
             case "Human Resources": querySalaryDepartment(2, "Human Resources"); break;  
@@ -383,7 +453,8 @@ async function querySalaryDepartment(id, departmentName){
             for(let i=0; i<data.length; i++){
                 sum += data[i].salary;
             }
-        console.log(`\n The total budget for the ${departmentName} department is $${sum}/year \n`);
+        console.log(`\n Total budget for ${departmentName}: $${sum}/year \n`);
+        console.log("\n=====================================================================\n");
         inquireWhatToDo();
         });     
     } catch (error) {
