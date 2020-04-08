@@ -7,7 +7,7 @@ The challenge for creating this application is to architect and build a solution
 ## Design
 
 The database schema design contains 3 tables:
-<div style="width:75%">
+<div style="width:50%">
 
 ![Database Schema](assets/img/schema.png)
 
@@ -92,7 +92,7 @@ SO I can organize and focus on the business
 ## Screenshots
 
 When application starts:
-<div style="width:60%">
+<div style="width:50%">
 
 ![App Start](assets/img/0_application_start.png)
 
