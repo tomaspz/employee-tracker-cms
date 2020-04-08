@@ -7,20 +7,27 @@ The challenge for creating this application is to architect and build a solution
 ## Design
 
 The database schema design contains 3 tables:
+<div style="width:75%">
 
 ![Database Schema](assets/img/schema.png)
+
+</div>
+
+- - -
 
 * **department**:
 
   * **id** - INT PRIMARY KEY
   * **name** - VARCHAR(30) to hold department name
-
+- - -
 * **role**:
 
   * **id** - INT PRIMARY KEY
   * **title** -  VARCHAR(30) to hold role title
   * **salary** -  DECIMAL to hold role salary
   * **department_id** -  INT to hold reference to department role belongs to
+
+- - -
 
 * **employee**:
 
@@ -29,7 +36,11 @@ The database schema design contains 3 tables:
   * **last_name** - VARCHAR(30) to hold employee last name
   * **role_id** - INT to hold reference to role employee has
   * **manager_id** - INT to hold reference to another employee that manager of the current employee. This field may be null if the employee has no manager
-  
+
+- - -
+
+## Features
+
 This command-line application allows the user to:
 
   * add departments, roles, employees
@@ -81,6 +92,8 @@ SO I can organize and focus on the business
 ## Screenshots
 
 When application starts:
+<div style="width:60%">
+
 ![App Start](assets/img/0_application_start.png)
 
 When viewing all employees:
@@ -100,3 +113,4 @@ When viewing all employees by manager:
 
 When viewing the total department budget:
 ![Department Budget](assets/img/6_view_total_department_budget.png)
+</div>
